@@ -12,7 +12,7 @@ UBOOT_REPO ?= "git://github.com/altera-opensource/u-boot-socfpga.git"
 UBOOT_PROT ?= "https"
 
 UBOOT_VERSION_PREFIX ?= "socfpga_"
-UBOOT_VERSION ?= "v2019.10"
+UBOOT_VERSION ?= "v2020.04"
 UBOOT_BRANCH ?= "${UBOOT_VERSION_PREFIX}${UBOOT_VERSION}"
 
 SRCREV ?= "${AUTOREV}"
