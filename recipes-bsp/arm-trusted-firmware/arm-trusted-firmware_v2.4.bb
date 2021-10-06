@@ -1,6 +1,6 @@
 require arm-trusted-firmware.inc
 
-ATF_VERSION = "v2.4.0"
+ATF_VERSION = "v2.4.1"
 ATF_BRANCH = "socfpga_${ATF_VERSION}"
 
-SRCREV = "b56764673f0935c6288ea5a711fa193177f6d6ec"
+SRCREV = "c841485a3730ba9193afc35b88b161ab0b30eaf7"
