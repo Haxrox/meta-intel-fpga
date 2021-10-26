@@ -9,8 +9,6 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM ?= "file://Licenses/README;md5=30503fd321432fc713238f582193b78e"
 PE = "1"
 
-require ${COREBASE}/meta/recipes-bsp/u-boot/u-boot.inc
-
 UBOOT_REPO ?= "git://github.com/altera-opensource/u-boot-socfpga.git"
 UBOOT_PROT ?= "https"
 
@@ -48,3 +46,73 @@ UBOOT_CONFIG[socrates] = "socfpga_socrates_defconfig"
 UBOOT_CONFIG[sr1500] = "socfpga_sr1500_defconfig"
 UBOOT_CONFIG[arria5-socdk] = "socfpga_arria5_defconfig"
 UBOOT_CONFIG[n5x-socdk-atf] = "socfpga_n5x_atf_defconfig"
+
+do_compile:prepend() {
+	if [ -n "${COMPILE_PREPEND_FILES}" ]
+	then
+		if [ -n "${UBOOT_CONFIG}" ]
+		then
+			for config in ${UBOOT_MACHINE}; do
+				i=$(expr $i + 1);
+				for type in ${UBOOT_CONFIG}; do
+					j=$(expr $j + 1);
+					if [ $j -eq $i ]
+					then
+						for file in ${COMPILE_PREPEND_FILES}; do
+							if [ "${file}" == "linux.dtb" ];
+							then
+								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+							else
+								cp ${DEPLOY_DIR_IMAGE}/${file} ${B}/${config}/${file}
+								cp ${DEPLOY_DIR_IMAGE}/${file} ${S}/${file}
+							fi
+						done
+					fi
+				done
+				unset j
+			done
+			unset i
+		else
+			for file in ${COMPILE_PREPEND_FILES}; do
+				if [ "${file}" == "linux.dtb" ];
+				then
+					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+				else
+					cp ${DEPLOY_DIR_IMAGE}/${file} ${B}/${config}/${file}
+					cp ${DEPLOY_DIR_IMAGE}/${file} ${S}/${file}
+				fi
+			done
+		fi
+	fi
+}
+
+do_deploy:append() {
+	if [ -n "${DEPLOY_APPEND_FILES}" ]
+	then
+		if [ -n "${UBOOT_CONFIG}" ]
+		then
+			for config in ${UBOOT_MACHINE}; do
+				i=$(expr $i + 1);
+				for type in ${UBOOT_CONFIG}; do
+					j=$(expr $j + 1);
+					if [ $j -eq $i ]
+					then
+						for file in ${DEPLOY_APPEND_FILES}; do
+							install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+						done
+					fi
+				done
+				unset j
+			done
+			unset i
+		else
+			for file in ${DEPLOY_APPEND_FILES}; do
+				install -m 744 ${B}/${file} ${DEPLOYDIR}/${file}
+			done
+		fi
+	fi
+}
+
+require ${COREBASE}/meta/recipes-bsp/u-boot/u-boot.inc
