@@ -59,7 +59,7 @@ do_compile:prepend() {
 					if [ $j -eq $i ]
 					then
 						for file in ${COMPILE_PREPEND_FILES}; do
-							if [ "${file}" == "linux.dtb" ];
+							if [ "${file}" = "linux.dtb" ];
 							then
 								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
 								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
@@ -75,7 +75,7 @@ do_compile:prepend() {
 			unset i
 		else
 			for file in ${COMPILE_PREPEND_FILES}; do
-				if [ "${file}" == "linux.dtb" ];
+				if [ "${file}" = "linux.dtb" ];
 				then
 					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
 					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
