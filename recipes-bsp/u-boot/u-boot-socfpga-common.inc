@@ -48,21 +48,34 @@ UBOOT_CONFIG[arria5-socdk] = "socfpga_arria5_defconfig"
 UBOOT_CONFIG[n5x-socdk-atf] = "socfpga_n5x_atf_defconfig"
 
 do_compile:prepend() {
-	if [ -n "${COMPILE_PREPEND_FILES}" ]
-	then
-		if [ -n "${UBOOT_CONFIG}" ]
-		then
+	if [ -n "${COMPILE_PREPEND_FILES}" ]; then
+		if [ -n "${UBOOT_CONFIG}" ]; then
 			for config in ${UBOOT_MACHINE}; do
 				i=$(expr $i + 1);
 				for type in ${UBOOT_CONFIG}; do
 					j=$(expr $j + 1);
-					if [ $j -eq $i ]
-					then
+					if [ $j -eq $i ]; then
 						for file in ${COMPILE_PREPEND_FILES}; do
-							if [ "${file}" = "linux.dtb" ];
-							then
-								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
-								cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+							if [ "${file}" = "linux.dtb" ]; then
+								if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+									if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+										cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+										cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+									fi
+								else
+									cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+									cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+								fi
+							elif [ "${file}" = "u-boot.txt" ]; then
+								if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+									if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+										cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${B}/${config}/u-boot.txt
+										cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${S}/u-boot.txt
+									fi
+								else
+									cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${B}/${config}/u-boot.txt
+									cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${S}/u-boot.txt
+								fi
 							else
 								cp ${DEPLOY_DIR_IMAGE}/${file} ${B}/${config}/${file}
 								cp ${DEPLOY_DIR_IMAGE}/${file} ${S}/${file}
@@ -75,15 +88,59 @@ do_compile:prepend() {
 			unset i
 		else
 			for file in ${COMPILE_PREPEND_FILES}; do
-				if [ "${file}" = "linux.dtb" ];
-				then
-					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
-					cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+				if [ "${file}" = "linux.dtb" ]; then
+					if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+						if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+							cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+							cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+						fi
+					else
+						cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${B}/${config}/linux.dtb
+						cp ${DEPLOY_DIR_IMAGE}/socfpga_${MACHINE}_socdk.dtb ${S}/linux.dtb
+					fi
+				elif [ "${file}" = "u-boot.txt" ]; then
+					if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+						if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+							cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${B}/${config}/u-boot.txt
+							cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${S}/u-boot.txt
+						fi
+					else
+						cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${B}/${config}/u-boot.txt
+						cp ${DEPLOY_DIR_IMAGE}/u-boot.txt ${S}/u-boot.txt
+					fi
 				else
 					cp ${DEPLOY_DIR_IMAGE}/${file} ${B}/${config}/${file}
 					cp ${DEPLOY_DIR_IMAGE}/${file} ${S}/${file}
 				fi
 			done
+		fi
+	fi
+}
+
+do_install:append() {
+	if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ] || [ "${MACHINE}" = "n5x" ]; then
+		if [ -n "${UBOOT_CONFIG}" ]; then
+			for config in ${UBOOT_MACHINE}; do
+				i=$(expr $i + 1);
+				for type in ${UBOOT_CONFIG}; do
+					j=$(expr $j + 1);
+					if [ $j -eq $i ]; then
+						cp ${B}/${config}/u-boot.itb ${B}/${config}/u-boot-${type}.itb
+						install -D -m 644 ${B}/${config}/u-boot-${type}.itb ${D}/boot/u-boot-${type}-${PV}-${PR}.itb
+						ln -sf u-boot-${type}-${PV}-${PR}.itb ${D}/boot/u-boot.itb-${type}
+						ln -sf u-boot-${type}-${PV}-${PR}.itb ${D}/boot/u-boot.itb
+						rm -rf  ${D}/boot/*.img*
+					fi
+				done
+				unset j
+			done
+			unset i
+		else
+			cp ${B}/u-boot.itb ${B}/u-boot-${UBOOT_CONFIG}.itb
+			install -D -m 644 ${B}/u-boot-${config}.itb ${D}/boot/u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb
+			ln -sf u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb ${D}/boot/u-boot.itb-${UBOOT_CONFIG}
+			ln -sf u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb ${D}/boot/u-boot.itb
+			rm -rf  ${D}/boot/*.img*
 		fi
 	fi
 }
@@ -100,7 +157,15 @@ do_deploy:append() {
 					if [ $j -eq $i ]
 					then
 						for file in ${DEPLOY_APPEND_FILES}; do
-							install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+							if [ "${MACHINE}" = "n5x" ]; then
+								install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+							else
+								if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+									if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+										install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+									fi
+								fi
+							fi
 						done
 					fi
 				done
@@ -109,7 +174,15 @@ do_deploy:append() {
 			unset i
 		else
 			for file in ${DEPLOY_APPEND_FILES}; do
-				install -m 744 ${B}/${file} ${DEPLOYDIR}/${file}
+				if [ "${MACHINE}" = "n5x" ]; then
+					install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+				else
+					if [ "${MACHINE}" = "agilex" ] || [ "${MACHINE}" = "stratix10" ]; then
+						if [ "${IMAGE_TYPE}" != "gsrd" ]; then
+							install -m 744 ${B}/${config}/${file} ${DEPLOYDIR}/${file}
+						fi
+					fi
+				fi
 			done
 		fi
 	fi
