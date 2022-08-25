@@ -22,10 +22,12 @@ S = "${WORKDIR}/git"
 COMPATIBLE_MACHINE = "(agilex|stratix10|n5x)"
 ATFPLAT = "${MACHINE}"
 
+LDFLAGS="--no-warn-rwx-segments"
+
 # Let the Makefile handle setting up the CFLAGS and LDFLAGS as it is a standalone application
-EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" PLAT="${ATFPLAT}" DEPRECATED=1'
+EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" PLAT="${ATFPLAT}" LDFLAGS="${LDFLAGS}" DEPRECATED=1'
 CFLAGS[unexport] = "1"
-LDFLAGS[unexport] = "1"
+# LDFLAGS[unexport] = "1"
 AS[unexport] = "1"
 LD[unexport] = "1"
 PARALLEL_MAKE = ""
