@@ -5,6 +5,19 @@ DEPENDS = "coreutils-native bc-native bison-native dtc-native flex-native"
 DEPENDS:append = " python3-setuptools-native swig-native u-boot-mkimage-native"
 DEPENDS:append = " u-boot-tools virtual/kernel"
 
+DEPENDS:append:agilex = " arm-trusted-firmware bash"
+DEPENDS:append:stratix10 = " arm-trusted-firmware bash"
+DEPENDS:append:n5x = " arm-trusted-firmware bash"
+
+COMPILE_PREPEND_FILES:stratix10 = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex = " bl31.bin "
+COMPILE_PREPEND_FILES:n5x = " bl31.bin Image linux.dtb u-boot.txt "
+COMPILE_PREPEND_FILES:arria10 = " Image "
+
+DEPLOY_APPEND_FILES:agilex = ""
+DEPLOY_APPEND_FILES:stratix10 = ""
+DEPLOY_APPEND_FILES:n5x = " kernel.itb "
+
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM ?= "file://Licenses/README;md5=30503fd321432fc713238f582193b78e"
 PE = "1"
