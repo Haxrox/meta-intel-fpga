@@ -8,12 +8,14 @@ DEPENDS:append = " u-boot-tools virtual/kernel"
 DEPENDS:append:agilex_fm61 = " arm-trusted-firmware bash"
 DEPENDS:append:agilex_fm87 = " arm-trusted-firmware bash"
 DEPENDS:append:agilex_fm86 = " arm-trusted-firmware bash"
+DEPENDS:append:agilex5 = " arm-trusted-firmware bash"
 DEPENDS:append:stratix10 = " arm-trusted-firmware bash"
 DEPENDS:append:n5x = " arm-trusted-firmware bash"
 
 COMPILE_PREPEND_FILES:agilex_fm61 = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex_fm87 = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex_fm86 = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex5 = " bl31.bin "
 COMPILE_PREPEND_FILES:stratix10 = " bl31.bin "
 COMPILE_PREPEND_FILES:n5x = " bl31.bin Image linux.dtb u-boot.txt "
 COMPILE_PREPEND_FILES:arria10 = " Image "
@@ -21,6 +23,7 @@ COMPILE_PREPEND_FILES:arria10 = " Image "
 DEPLOY_APPEND_FILES:agilex_fm61 = ""
 DEPLOY_APPEND_FILES:agilex_fm87 = ""
 DEPLOY_APPEND_FILES:agilex_fm86 = ""
+DEPLOY_APPEND_FILES:agilex5 = ""
 DEPLOY_APPEND_FILES:stratix10 = ""
 DEPLOY_APPEND_FILES:n5x = " kernel.itb "
 
@@ -88,7 +91,7 @@ do_compile:prepend() {
 }
 
 do_install:append() {
-	if [ "${MACHINE}" = *"agilex"* ] || [ "${MACHINE}" = "stratix10" ] || [ "${MACHINE}" = "n5x" ]; then
+	if [ "${MACHINE}" = *"agilex_"* ] || [ "${MACHINE}" = "agilex5" ] || [ "${MACHINE}" = "stratix10" ] || [ "${MACHINE}" = "n5x" ]; then
 		if [ -n "${UBOOT_CONFIG}" ]; then
 			for config in ${UBOOT_MACHINE}; do
 				i=$(expr $i + 1);
