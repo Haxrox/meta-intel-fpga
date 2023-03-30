@@ -1,6 +1,6 @@
 LINUX_VERSION = "6.1"
 
-SRCREV = "d345a46074e9b94be5a30a6d8f0df66b47cb59f1"
+SRCREV = "5786aaff93079c1ca03a54cd2d53b54784c4e8f5"
 
 include linux-socfpga.inc
 
