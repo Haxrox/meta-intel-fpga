@@ -1,0 +1,8 @@
+LINUX_VERSION = "6.1.20"
+LINUX_VERSION_SUFFIX = "-lts"
+
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+
+SRCREV = "8afb8130596c42392051c0b469445459b49ac07e"
+
+include linux-socfpga.inc
