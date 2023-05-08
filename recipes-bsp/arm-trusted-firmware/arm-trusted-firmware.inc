@@ -26,10 +26,11 @@ ATFPLAT:agilex_fm87 = "agilex"
 ATFPLAT:agilex_fm86 = "agilex"
 
 LDFLAGS="--no-warn-rwx-segments"
+CFLAGS="-Wno-error=array-bounds"
 
 # Let the Makefile handle setting up the CFLAGS and LDFLAGS as it is a standalone application
-EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" PLAT="${ATFPLAT}" LDFLAGS="${LDFLAGS}" DEPRECATED=1'
-CFLAGS[unexport] = "1"
+EXTRA_OEMAKE = 'CROSS_COMPILE="${TARGET_PREFIX}" PLAT="${ATFPLAT}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" DEPRECATED=1'
+# CFLAGS[unexport] = "1"
 # LDFLAGS[unexport] = "1"
 AS[unexport] = "1"
 LD[unexport] = "1"
