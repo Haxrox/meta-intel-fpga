@@ -17,9 +17,5 @@ UBOOT_ELF ?= "u-boot"
 
 # UBOOT_IMAGE = "u-boot-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
 
-# Settings for ubifs
-MKUBIFS_ARGS = "--leb-size 126976 --min-io-size 2048 --max-leb-cnt 3600"
-UBINIZE_ARGS = "--peb-size 128KiB --min-io-size 2048 --sub-page-size 2048"
-
 IMAGE_FSTYPES ?= "cpio ext3 tar.gz"
 do_image_wic[depends] += "mtools-native:do_populate_sysroot dosfstools-native:do_populate_sysroot virtual/bootloader:do_deploy virtual/kernel:do_deploy"
