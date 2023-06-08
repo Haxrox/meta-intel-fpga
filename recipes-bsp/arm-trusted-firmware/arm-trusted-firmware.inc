@@ -19,10 +19,11 @@ SRC_URI = "${ATF_REPO};protocol=${ATF_PROT};branch=${ATF_BRANCH}"
 
 S = "${WORKDIR}/git"
 
-COMPATIBLE_MACHINE = "(agilex_fm61|agilex_fm87|agilex_fm86|agilex5|stratix10|n5x)"
+COMPATIBLE_MACHINE = "(agilex_fm61|agilex_fm87|agilex_fm87_linear|agilex_fm86|agilex5|stratix10|n5x)"
 ATFPLAT = "${MACHINE}"
 ATFPLAT:agilex_fm61 = "agilex"
 ATFPLAT:agilex_fm87 = "agilex"
+ATFPLAT:agilex_fm87_linear = "agilex"
 ATFPLAT:agilex_fm86 = "agilex"
 
 LDFLAGS="--no-warn-rwx-segments"

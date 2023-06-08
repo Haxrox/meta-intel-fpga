@@ -31,6 +31,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/config:"
 
 SRC_URI:append:agilex_fm61 = " file://jffs2.scc file://gpio_sys.scc "
 SRC_URI:append:agilex_fm87 = " file://jffs2.scc file://gpio_sys.scc "
+SRC_URI:append:agilex_fm87_linear = " file://jffs2.scc file://gpio_sys.scc "
 SRC_URI:append:agilex_fm86 = " file://jffs2.scc file://gpio_sys.scc "
 SRC_URI:append:agilex5 = " file://jffs2.scc file://gpio_sys.scc file://agilex5.scc"
 SRC_URI:append:stratix10 = " file://jffs2.scc file://gpio_sys.scc "

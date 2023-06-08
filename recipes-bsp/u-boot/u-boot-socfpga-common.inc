@@ -7,6 +7,7 @@ DEPENDS:append = " u-boot-tools virtual/kernel"
 
 DEPENDS:append:agilex_fm61 = " arm-trusted-firmware bash"
 DEPENDS:append:agilex_fm87 = " arm-trusted-firmware bash"
+DEPENDS:append:agilex_fm87_linear = " arm-trusted-firmware bash"
 DEPENDS:append:agilex_fm86 = " arm-trusted-firmware bash"
 DEPENDS:append:agilex5 = " arm-trusted-firmware bash"
 DEPENDS:append:stratix10 = " arm-trusted-firmware bash"
@@ -14,6 +15,7 @@ DEPENDS:append:n5x = " arm-trusted-firmware bash"
 
 COMPILE_PREPEND_FILES:agilex_fm61 = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex_fm87 = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex_fm87_linear = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex_fm86 = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex5 = " bl31.bin "
 COMPILE_PREPEND_FILES:stratix10 = " bl31.bin "
@@ -22,6 +24,7 @@ COMPILE_PREPEND_FILES:arria10 = " Image "
 
 DEPLOY_APPEND_FILES:agilex_fm61 = ""
 DEPLOY_APPEND_FILES:agilex_fm87 = ""
+DEPLOY_APPEND_FILES:agilex_fm87_linear = ""
 DEPLOY_APPEND_FILES:agilex_fm86 = ""
 DEPLOY_APPEND_FILES:agilex5 = ""
 DEPLOY_APPEND_FILES:stratix10 = ""
@@ -102,7 +105,7 @@ do_install:append() {
 						install -D -m 644 ${B}/${config}/u-boot-${type}.itb ${D}/boot/u-boot-${type}-${PV}-${PR}.itb
 						ln -sf u-boot-${type}-${PV}-${PR}.itb ${D}/boot/u-boot.itb-${type}
 						ln -sf u-boot-${type}-${PV}-${PR}.itb ${D}/boot/u-boot.itb
-						rm -rf  ${D}/boot/*.img*
+						rm -rf  ${D}/boot/?*.img*
 					fi
 				done
 				unset j
@@ -113,7 +116,7 @@ do_install:append() {
 			install -D -m 644 ${B}/u-boot-${config}.itb ${D}/boot/u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb
 			ln -sf u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb ${D}/boot/u-boot.itb-${UBOOT_CONFIG}
 			ln -sf u-boot-${UBOOT_CONFIG}-${PV}-${PR}.itb ${D}/boot/u-boot.itb
-			rm -rf  ${D}/boot/*.img*
+			rm -rf  ${D}/boot/?*.img*
 		fi
 	fi
 }
