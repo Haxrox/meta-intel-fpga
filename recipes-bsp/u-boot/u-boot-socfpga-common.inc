@@ -5,30 +5,30 @@ DEPENDS = "coreutils-native bc-native bison-native dtc-native flex-native"
 DEPENDS:append = " python3-setuptools-native swig-native u-boot-mkimage-native"
 DEPENDS:append = " u-boot-tools virtual/kernel"
 
-DEPENDS:append:agilex_fm61 = " arm-trusted-firmware bash"
-DEPENDS:append:agilex_fm61_linear = " arm-trusted-firmware bash"
-DEPENDS:append:agilex_fm87 = " arm-trusted-firmware bash"
-DEPENDS:append:agilex_fm87_linear = " arm-trusted-firmware bash"
-DEPENDS:append:agilex_fm86 = " arm-trusted-firmware bash"
+DEPENDS:append:agilex7_dk_si_agf014ea = " arm-trusted-firmware bash"
+DEPENDS:append:agilex7_dk_si_agf014eb = " arm-trusted-firmware bash"
+DEPENDS:append:agilex7_dk_si_agi027fb = " arm-trusted-firmware bash"
+DEPENDS:append:agilex7_dk_si_agi027fa = " arm-trusted-firmware bash"
+DEPENDS:append:agilex7_dk_dev_agf027f1es = " arm-trusted-firmware bash"
 DEPENDS:append:agilex5 = " arm-trusted-firmware bash"
 DEPENDS:append:stratix10 = " arm-trusted-firmware bash"
 DEPENDS:append:n5x = " arm-trusted-firmware bash"
 
-COMPILE_PREPEND_FILES:agilex_fm61 = " bl31.bin "
-COMPILE_PREPEND_FILES:agilex_fm61_linear = " bl31.bin "
-COMPILE_PREPEND_FILES:agilex_fm87 = " bl31.bin "
-COMPILE_PREPEND_FILES:agilex_fm87_linear = " bl31.bin "
-COMPILE_PREPEND_FILES:agilex_fm86 = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex7_dk_si_agf014ea = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex7_dk_si_agf014eb = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex7_dk_si_agi027fb = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex7_dk_si_agi027fa = " bl31.bin "
+COMPILE_PREPEND_FILES:agilex7_dk_dev_agf027f1es = " bl31.bin "
 COMPILE_PREPEND_FILES:agilex5 = " bl31.bin "
 COMPILE_PREPEND_FILES:stratix10 = " bl31.bin "
 COMPILE_PREPEND_FILES:n5x = " bl31.bin Image linux.dtb u-boot.txt "
 COMPILE_PREPEND_FILES:arria10 = " Image "
 
-DEPLOY_APPEND_FILES:agilex_fm61 = ""
-DEPLOY_APPEND_FILES:agilex_fm61_linear = ""
-DEPLOY_APPEND_FILES:agilex_fm87 = ""
-DEPLOY_APPEND_FILES:agilex_fm87_linear = ""
-DEPLOY_APPEND_FILES:agilex_fm86 = ""
+DEPLOY_APPEND_FILES:agilex7_dk_si_agf014ea = ""
+DEPLOY_APPEND_FILES:agilex7_dk_si_agf014eb = ""
+DEPLOY_APPEND_FILES:agilex7_dk_si_agi027fb = ""
+DEPLOY_APPEND_FILES:agilex7_dk_si_agi027fa = ""
+DEPLOY_APPEND_FILES:agilex7_dk_dev_agf027f1es = ""
 DEPLOY_APPEND_FILES:agilex5 = ""
 DEPLOY_APPEND_FILES:stratix10 = ""
 DEPLOY_APPEND_FILES:n5x = " kernel.itb "
@@ -97,7 +97,7 @@ do_compile:prepend() {
 }
 
 do_install:append() {
-	if [ "${MACHINE}" = *"agilex_"* ] || [ "${MACHINE}" = "agilex5" ] || [ "${MACHINE}" = "stratix10" ] || [ "${MACHINE}" = "n5x" ]; then
+	if [ "${MACHINE}" = *"agilex7_"* ] || [ "${MACHINE}" = "agilex5" ] || [ "${MACHINE}" = "stratix10" ] || [ "${MACHINE}" = "n5x" ]; then
 		if [ -n "${UBOOT_CONFIG}" ]; then
 			for config in ${UBOOT_MACHINE}; do
 				i=$(expr $i + 1);
