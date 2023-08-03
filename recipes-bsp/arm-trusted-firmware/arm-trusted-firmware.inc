@@ -19,13 +19,14 @@ SRC_URI = "${ATF_REPO};protocol=${ATF_PROT};branch=${ATF_BRANCH}"
 
 S = "${WORKDIR}/git"
 
-COMPATIBLE_MACHINE = "(agilex7_dk_si_agf014ea|agilex7_dk_si_agf014eb|agilex7_dk_si_agi027fb|agilex7_dk_si_agi027fa|agilex7_dk_dev_agf027f1es|agilex5|stratix10|n5x)"
+COMPATIBLE_MACHINE = "(agilex7_dk_si_agf014ea|agilex7_dk_si_agf014eb|agilex7_dk_si_agi027fb|agilex7_dk_si_agi027fa|agilex7_dk_dev_agf027f1es|agilex7_dk_dev_agm039fes|agilex5|stratix10|n5x)"
 ATFPLAT = "${MACHINE}"
 ATFPLAT:agilex7_dk_si_agf014ea = "agilex"
 ATFPLAT:agilex7_dk_si_agf014eb = "agilex"
 ATFPLAT:agilex7_dk_si_agi027fb = "agilex"
 ATFPLAT:agilex7_dk_si_agi027fa = "agilex"
 ATFPLAT:agilex7_dk_dev_agf027f1es = "agilex"
+ATFPLAT:agilex7_dk_dev_agm039fes = "agilex"
 
 LDFLAGS="--no-warn-rwx-segments"
 CFLAGS="-Wno-error=array-bounds"
